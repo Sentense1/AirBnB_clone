@@ -157,11 +157,12 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def do_update(self, arg):
-        """Usage: update <class> <id> <attribute_name> <attribute_value> or
-       <class>.update(<id>, <attribute_name>, <attribute_value>) or
-       <class>.update(<id>, <dictionary>)
-        Update a class instance of a given id by adding or updating
-        a given attribute key/value pair or dictionary."""
+        """ Usage: update <class> <id> <attribute_name> <attribute_value> or
+            <class>.update(<id>, <attribute_name>, <attribute_value>) or
+            <class>.update(<id>, <dictionary>)
+            Update a class instance of a given id by adding or updating
+            a given attribute key/value pair or dictionary. """
+
         argl = parse(arg)
         objdict = storage.all()
 
@@ -180,12 +181,9 @@ class HBNBCommand(cmd.Cmd):
         if len(argl) == 2:
             print("** attribute name missing **")
             return False
-        if len(argl) == 3:
-            try:
-                type(eval(argl[2])) != dict
-            except NameError:
-                print("** value missing **")
-                return False
+        if len(argl) == 3 and not isinstance(eval(argl[2]), dict):
+            print("** value missing **")
+            return False
 
         if len(argl) == 4:
             obj = objdict["{}.{}".format(argl[0], argl[1])]
@@ -194,7 +192,7 @@ class HBNBCommand(cmd.Cmd):
                 obj.__dict__[argl[2]] = valtype(argl[3])
             else:
                 obj.__dict__[argl[2]] = argl[3]
-        elif type(eval(argl[2])) == dict:
+        elif isinstance(eval(argl[2]), dict):
             obj = objdict["{}.{}".format(argl[0], argl[1])]
             for k, v in eval(argl[2]).items():
                 if (k in obj.__class__.__dict__.keys() and
