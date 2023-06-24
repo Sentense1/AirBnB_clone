@@ -46,4 +46,4 @@ class FileStorage:
                     del o["__class__"]
                     self.new(eval(cls_name)(**o))
         except FileNotFoundError:
-            return
+            raise FileNotFoundError("File not found: {}".format(FileStorage.__file_path))
