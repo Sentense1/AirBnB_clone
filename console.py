@@ -221,54 +221,54 @@ class HBNBCommand(cmd.Cmd):
         objdict = storage.all()
 
         if len(argl) == 0:
-        # If no class name is provided
-        print("** class name missing **")
-        return False
-    if argl[0] not in HBNBCommand.__classes:
-        # If the class doesn't exist
-        print("** class doesn't exist **")
-        return False
-    if len(argl) == 1:
-        # If no instance ID is provided
-        print("** instance id missing **")
-        return False
-    if "{}.{}".format(argl[0], argl[1]) not in objdict.keys():
-        # If the instance doesn't exist
-        print("** no instance found **")
-        return False
-    if len(argl) == 2:
-        # If no attribute name is provided
-        print("** attribute name missing **")
-        return False
-    if len(argl) == 3:
-        try:
-            type(eval(argl[2])) != dict
-        except NameError:
-            # If no value is provided
-            print("** value missing **")
+            # If no class name is provided
+            print("** class name missing **")
             return False
+        if argl[0] not in HBNBCommand.__classes:
+            # If the class doesn't exist
+            print("** class doesn't exist **")
+            return False
+        if len(argl) == 1:
+            # If no instance ID is provided
+            print("** instance id missing **")
+            return False
+        if "{}.{}".format(argl[0], argl[1]) not in objdict.keys():
+            # If the instance doesn't exist
+            print("** no instance found **")
+            return False
+        if len(argl) == 2:
+            # If no attribute name is provided
+            print("** attribute name missing **")
+            return False
+        if len(argl) == 3:
+            try:
+                type(eval(argl[2])) != dict
+            except NameError:
+                # If no value is provided
+                print("** value missing **")
+                return False
 
-    if len(argl) == 4:
-        # If there are four arguments provided
-        obj = objdict["{}.{}".format(argl[0], argl[1])]
-        if argl[2] in obj.__class__.__dict__.keys():
-            # If the attribute name exists in the class definition
-            valtype = type(obj.__class__.__dict__[argl[2]])
-            obj.__dict__[argl[2]] = valtype(argl[3])  # Update the attribute value
-        else:
-            obj.__dict__[argl[2]] = argl[3]  # Add a new attribute with the provided value
-    elif type(eval(argl[2])) == dict:
-        # If the third argument is of type dict
-        obj = objdict["{}.{}".format(argl[0], argl[1])]
-        for k, v in eval(argl[2]).items():
-            if (k in obj.__class__.__dict__.keys() and
-                    type(obj.__class__.__dict__[k]) in {str, int, float}):
-                # If the attribute name exists in the class definition and its type is valid
-                valtype = type(obj.__class__.__dict__[k])
-                obj.__dict__[k] = valtype(v)  # Update the attribute value
+        if len(argl) == 4:
+            # If there are four arguments provided
+            obj = objdict["{}.{}".format(argl[0], argl[1])]
+            if argl[2] in obj.__class__.__dict__.keys():
+                # If the attribute name exists in the class definition
+                valtype = type(obj.__class__.__dict__[argl[2]])
+                obj.__dict__[argl[2]] = valtype(argl[3])  # Update the attribute value
             else:
-                obj.__dict__[k] = v  # Add a new attribute with the provided value
-    storage.save()  # Save the changes to the storage
+                obj.__dict__[argl[2]] = argl[3]  # Add a new attribute with the provided value
+        elif type(eval(argl[2])) == dict:
+            # If the third argument is of type dict
+            obj = objdict["{}.{}".format(argl[0], argl[1])]
+            for k, v in eval(argl[2]).items():
+                if (k in obj.__class__.__dict__.keys() and
+                        type(obj.__class__.__dict__[k]) in {str, int, float}):
+                    # If the attribute name exists in the class definition and its type is valid
+                    valtype = type(obj.__class__.__dict__[k])
+                    obj.__dict__[k] = valtype(v)  # Update the attribute value
+                else:
+                    obj.__dict__[k] = v  # Add a new attribute with the provided value
+        storage.save()  # Save the changes to the storage
 
 
 
